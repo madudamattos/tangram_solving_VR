@@ -6,6 +6,8 @@ public class FindRightTemplate : MonoBehaviour
 {
     private GameObject templatePiece;
     private Material currentMaterial;
+    private Rigidbody rb;
+
     [SerializeField] Material highlightMaterial;
 
     string pieceName;
@@ -15,6 +17,8 @@ public class FindRightTemplate : MonoBehaviour
     void Start()
     {
         GetTemplate();
+
+        rb = this.GetComponent<Rigidbody>();
     }
 
     void GetTemplate()
@@ -42,18 +46,25 @@ public class FindRightTemplate : MonoBehaviour
         templateRenderer.material = currentMaterial;
     }
 
-
-    void OnTriggerStay(Collider col)
+    void OnTriggerEnter(Collider col)
     {
         if(col.gameObject.name == templateName)
         {
-            Rigidbody rb = this.GetComponent<Rigidbody>();
             if (!rb.isKinematic)
             {
                 this.transform.position = templatePiece.transform.position;
                 this.transform.rotation = templatePiece.transform.rotation;
-                Destroy(templatePiece.gameObject);
+                templatePiece.gameObject.SetActive(false);
+                rb.isKinematic = false;
             }
+        }
+    }
+
+    void OnTriggerStay(Collider col)
+    {
+        if(!rb.isKinematic)
+        {
+            templatePiece.gameObject.SetActive(true);
         }
     }
 
