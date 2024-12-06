@@ -54,12 +54,29 @@ public class FindRightTemplate : MonoBehaviour
             {
                 this.transform.position = templatePiece.transform.position;
                 this.transform.rotation = templatePiece.transform.rotation;
-                templatePiece.gameObject.SetActive(false);
-                rb.isKinematic = false;
+                rb.isKinematic = true;
             }
+
+            if (rb.isKinematic)
+            {
+                templatePiece.gameObject.GetComponent<MeshRenderer>().enabled = false;
+            }
+            
+
         }
     }
 
+    void OnTriggerExit(Collider col)
+    {
+        if (col.gameObject.name == templateName)
+        {
+            rb.isKinematic = false;
+            templatePiece.gameObject.GetComponent<MeshRenderer>().enabled = true;
+        }
+    }
+
+
+    /*
     void OnTriggerStay(Collider col)
     {
         if(!rb.isKinematic)
@@ -67,5 +84,6 @@ public class FindRightTemplate : MonoBehaviour
             templatePiece.gameObject.SetActive(true);
         }
     }
+    */
 
 }
